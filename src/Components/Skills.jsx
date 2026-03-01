@@ -13,6 +13,7 @@ import {
   MongoDB,
   Tailwind,
 } from './SkillLogos';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
 const skillsRow1 = [
@@ -37,61 +38,55 @@ export default function Skills({ isRGBActive }) {
   return (
     <section
       id="skills"
-      className="w-full bg-white dark:bg-base-300 text-black dark:text-white py-24 transition-colors duration-500 overflow-hidden"
+      className="w-full bg-black text-white py-24 transition-colors duration-500 overflow-hidden"
     >
       <div className="container mx-auto text-center">
         <div className="inline-block mb-12">
           <div className="flex flex-col items-center justify-center py-10">
-            {/* Outer Container with Animated Border */}
-            <div className="relative p-[3px] rounded-3xl overflow-hidden group">
+            {/* Outer Container with Green Animated Border */}
+            <div className="relative p-[2px] rounded-3xl overflow-hidden group">
               {isRGBActive && (
-                <>
-                  <span
-                    className="absolute inset-[-1000%] animate-border-spin 
-                    bg-[conic-gradient(from_0deg_at_50%_50%,transparent_0%,transparent_45%,#FF3C3C_50%,transparent_55%,transparent_100%)]"
-                  ></span>
-                  <span
-                    className="absolute inset-[-1000%] animate-border-spin-reverse 
-                    bg-[conic-gradient(from_0deg_at_50%_50%,transparent_0%,transparent_45%,#00E5FF_50%,transparent_55%,transparent_100%)]"
-                  ></span>
-                </>
+                <span
+                  className="absolute inset-[-1000%] animate-border-spin 
+                  bg-[conic-gradient(from_0deg_at_50%_50%,transparent_0%,transparent_45%,#22c55e_50%,transparent_55%,transparent_100%)]"
+                ></span>
               )}
 
               {/* Inner Content Wrapper */}
-              <div className="relative p-8 md:p-12 rounded-[1.3rem] z-10 bg-white dark:bg-base-300 transition-colors duration-500">
+              <div className="relative p-8 md:p-12 rounded-[1.4rem] z-10 bg-[#0a0a0a] transition-colors duration-500">
                 <div className="relative group cursor-default">
-                  {/* --- টেক্সট এনিমেশন এখানে শুরু --- */}
                   <motion.h2
                     className="text-5xl md:text-7xl font-black tracking-tighter uppercase italic"
                     style={
                       isRGBActive
                         ? {
                             backgroundImage:
-                              'linear-gradient(90deg, #000, #000, #FF3C3C, #00E5FF, #000, #000)',
+                              'linear-gradient(90deg, #fff, #22c55e, #10b981, #fff)',
                             backgroundSize: '200% 100%',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                           }
                         : {
-                            color: 'inherit',
+                            color: '#22c55e',
                           }
                     }
                     animate={
                       isRGBActive
                         ? {
-                            backgroundPosition: ['100% 0%', '-100% 0%'],
+                            backgroundPosition: ['0% 0%', '200% 0%'],
                           }
                         : {}
                     }
                     transition={{
-                      duration: 3,
+                      duration: 4,
                       repeat: Infinity,
                       ease: 'linear',
                     }}
                   >
                     TECH STACK
                   </motion.h2>
-                  {/* --- টেক্সট এনিমেশন এখানে শেষ --- */}
+                  {/* Title Glow */}
+                  <div className="absolute inset-0 bg-green-500/20 blur-3xl -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </div>
               </div>
             </div>
@@ -99,26 +94,29 @@ export default function Skills({ isRGBActive }) {
         </div>
       </div>
 
-      <div className="relative max-w-screen-lg mx-auto flex flex-col gap-4">
-        {/* Blur Overlays */}
-        <div className="pointer-events-none absolute left-0 top-0 h-full w-24 z-10 bg-gradient-to-r from-white dark:from-base-300 to-transparent" />
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-24 z-10 bg-gradient-to-l from-white dark:from-base-300 to-transparent" />
-        <VelocityText baseVelocity={-3} numCopies={4}>
+      <div className="relative max-w-screen-lg mx-auto flex flex-col gap-10">
+        {/* Blur Overlays for Smooth Fading */}
+        <div className="pointer-events-none absolute left-0 top-0 h-full w-32 z-10 bg-gradient-to-r from-black to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-32 z-10 bg-gradient-to-l from-black to-transparent" />
+
+        {/* Row 1 */}
+        <VelocityText baseVelocity={-2} numCopies={6}>
           {skillsRow1.map((logo, index) => (
             <div
               key={index}
-              className="w-20 h-20 text-gray-600 dark:text-gray-400 mx-8"
+              className="w-16 h-16 md:w-20 md:h-20 text-gray-500 hover:text-green-400 mx-10 transition-all duration-300 transform hover:scale-125 hover:drop-shadow-[0_0_15px_rgba(34,197,94,0.5)]"
             >
               {logo}
             </div>
           ))}
         </VelocityText>
 
-        <VelocityText baseVelocity={3} numCopies={4}>
+        {/* Row 2 */}
+        <VelocityText baseVelocity={2} numCopies={6}>
           {skillsRow2.map((logo, index) => (
             <div
               key={index}
-              className="w-20 h-20 text-gray-600 dark:text-gray-400 mx-8"
+              className="w-16 h-16 md:w-20 md:h-20 text-gray-500 hover:text-green-400 mx-10 transition-all duration-300 transform hover:scale-125 hover:drop-shadow-[0_0_15px_rgba(34,197,94,0.5)]"
             >
               {logo}
             </div>

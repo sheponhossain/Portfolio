@@ -1,55 +1,96 @@
 import React, { useEffect, useState } from 'react';
-// import { tr } from 'framer-motion/client'; // এটি প্রয়োজন না থাকলে রিমুভ করতে পারেন
 import logo from '../../assets/logos/SheponLogo-0.png';
 
-const Navbar = ({ setIsRGBActive }) => {
-  const [theme, setTheme] = useState(
-    localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light'
-  );
+const Navbar = () => {
+  const [activeSection, setActiveSection] = useState('home');
 
   const navOptions = [
-    { name: 'Home', link: '/' },
-    { name: 'About', link: '/about' },
-    { name: 'Skills', link: '/skills' },
-    { name: 'Contact', link: '/contact' },
-    { name: 'Projects', link: '/projects' },
+    { name: 'Home', link: 'home' },
+    { name: 'About', link: 'about' },
+    { name: 'Skills', link: 'skills' },
+    { name: 'Projects', link: 'projects' },
+    { name: 'Education', link: 'education' },
+    { name: 'Contact', link: 'contact' },
   ];
 
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-100px 0px -40% 0px',
+      threshold: 0,
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      observerCallback,
+      observerOptions
+    );
+
+    navOptions.forEach((option) => {
+      const element = document.getElementById(option.link);
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleScroll = (e, id) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      const offsetTop = element.offsetTop - 80;
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth',
+      });
+      setActiveSection(id);
+    }
+  };
+
   const renderNavLinks = navOptions.map((item) => (
-    <li key={item.name}>
+    <li key={item.name} className="relative">
       <a
-        href={item.link}
-        className="hover:text-primary transition-colors font-medium"
+        href={`#${item.link}`}
+        onClick={(e) => handleScroll(e, item.link)}
+        className={`relative block pb-1 text-sm font-bold uppercase tracking-wider transition-all duration-300 group ${
+          activeSection === item.link
+            ? 'text-green-500'
+            : 'text-gray-400 hover:text-green-400'
+        }`}
       >
         {item.name}
+
+        <span
+          className={`absolute left-0 bottom-0 h-[2px] bg-green-500 shadow-[0_0_8px_#22c55e] transition-all duration-500 ease-in-out ${
+            activeSection === item.link
+              ? 'w-full opacity-100'
+              : 'w-0 opacity-0 group-hover:w-full group-hover:opacity-100'
+          }`}
+        ></span>
       </a>
     </li>
   ));
 
-  useEffect(() => {
-    localStorage.setItem('theme', theme);
-    const localTheme = localStorage.getItem('theme');
-    document.querySelector('html').setAttribute('data-theme', localTheme);
-  }, [theme]);
-
-  const handleToggle = (e) => {
-    if (e.target.checked) {
-      setTheme('dark');
-      setIsRGBActive(false);
-    } else {
-      setTheme('light');
-      setIsRGBActive(true);
-    }
-  };
-
   return (
-    <div className="navbar bg-base-100 shadow-sm sticky top-0 z-50 px-2 md:px-10">
+    <nav className="navbar bg-black/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-12 border-b border-white/5 shadow-2xl">
       <div className="navbar-start">
+        {/* Mobile Dropdown */}
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn btn-ghost lg:hidden text-green-500"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
+              className="h-6 w-6"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -64,59 +105,41 @@ const Navbar = ({ setIsRGBActive }) => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-[#0a0a0a] rounded-box z-[1] mt-3 w-52 p-6 shadow-2xl gap-5 border border-green-500/20"
           >
             {renderNavLinks}
           </ul>
         </div>
 
-        {/* লোগো সেকশন - পারফেক্ট সাইজিং */}
-        <a href="/" className="flex items-center">
-          <div className="h-8 w-auto md:h-12 md:w-16 overflow-hidden flex items-center justify-center">
+        {/* Logo Section */}
+        <a
+          href="#home"
+          onClick={(e) => handleScroll(e, 'home')}
+          className="flex items-center group"
+        >
+          <div className="h-10 w-10 md:h-12 md:w-12 overflow-hidden flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
             <img
               src={logo}
-              alt="Shepon Logo"
-              className="h-full w-full object-contain scale-[3] transform-gpu transition-transform duration-300 hover:scale-[2.0]"
-              /* scale-[1.8] ব্যবহার করে ইমেজটিকে ভেতরের দিকে বড় করা হয়েছে */
+              alt="Logo"
+              className="h-full w-full object-contain scale-[2.5]"
             />
           </div>
         </a>
       </div>
 
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1 gap-2">{renderNavLinks}</ul>
+        <ul className="menu menu-horizontal px-1 gap-10">{renderNavLinks}</ul>
       </div>
 
-      <div className="navbar-end gap-2">
-        {/* Theme Toggle Button */}
-        <label className="swap swap-rotate btn btn-ghost btn-circle">
-          <input
-            type="checkbox"
-            onChange={handleToggle}
-            checked={theme === 'dark'}
-          />
-          {/* Sun/Moon Icons এখানে আপনার আগের কোড অনুযায়ী থাকবে... */}
-          <svg
-            className="swap-on h-6 w-6 fill-current"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z" />
-          </svg>
-          <svg
-            className="swap-off h-6 w-6 fill-current"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.69Z" />
-          </svg>
-        </label>
-
-        <a className="btn btn-primary rounded-full px-6 text-white hidden sm:flex">
+      <div className="navbar-end gap-4">
+        <button
+          onClick={(e) => handleScroll(e, 'contact')}
+          className="btn bg-green-500 hover:bg-green-600 border-none rounded-full px-8 text-black font-bold hidden sm:flex shadow-[0_0_15px_rgba(34,197,94,0.4)] transition-all duration-300 hover:scale-105 active:scale-95"
+        >
           Hire Me
-        </a>
+        </button>
       </div>
-    </div>
+    </nav>
   );
 };
 

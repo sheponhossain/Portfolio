@@ -1,87 +1,96 @@
 import React, { useState, useRef } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import emailjs from '@emailjs/browser';
 
 export default function Contact({ isRGBActive }) {
-  const containerRef = useRef(null); // এটি সেকশনে অবশ্যই থাকতে হবে
-  const [isSent, setIsSent] = useState(false);
+  const containerRef = useRef(null);
   const formRef = useRef(null);
+  const [isSent, setIsSent] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSent(true);
-    if (formRef.current) formRef.current.reset();
-    setTimeout(() => setIsSent(false), 5000);
+    setIsSending(true);
+
+    emailjs
+      .sendForm(
+        'service_tusi51k',
+        'template_klups6d',
+        formRef.current,
+        'SGFiDR-NopKbFegdI'
+      )
+      .then(
+        (result) => {
+          console.log('Success:', result.text);
+          setIsSent(true);
+          setIsSending(false);
+          formRef.current.reset();
+          setTimeout(() => setIsSent(false), 5000);
+        },
+        (error) => {
+          console.error('Final Error Check:', error.text);
+          alert('Error: ' + error.text); // এখানে এখন 'Template ID not found' আসা উচিত না
+          setIsSending(false);
+        }
+      );
   };
 
-  // স্ক্রল ট্র্যাকিং আরও নিখুঁত করা হয়েছে
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start end', 'end start'], // সেকশন স্ক্রিনে আসার সাথে সাথে শুরু হবে
+    offset: ['start end', 'end start'],
   });
 
-  // চিঠিটি নিচ থেকে উপরে উঠার দূরত্ব বাড়ানো হয়েছে (60 থেকে -40)
   const letterY = useTransform(scrollYProgress, [0.2, 0.7], [60, -40]);
+  const letterMove = useSpring(letterY, { stiffness: 80, damping: 25 });
 
-  const letterMove = useSpring(letterY, {
-    stiffness: 80, // একটু ধীরে এবং স্মুথ মুভমেন্টের জন্য
-    damping: 25,
-  });
-
-  const lightGradient =
-    'conic-gradient(from 90deg at 50% 50%, #FAD0C4 0%, #FF9A9E 25%, #A1C4FD 50%, #FF9A9E 75%, #FAD0C4 100%)';
-  const darkGradient =
-    'conic-gradient(from 90deg at 50% 50%, #E2E8F0 0%, #8E7CDB 25%, #55B4E4 50%, #8E7CDB 75%, #E2E8F0 100%)';
-  const darkBtn = 'linear-gradient(to right, #8E7CDB, #55B4E4)';
-  const lightBtn = 'linear-gradient(to right, #FF9A9E, #A1C4FD)';
-
-  const inputStyles = isRGBActive
-    ? 'bg-white/30 text-gray-900 border-black/5 placeholder:text-gray-600 font-medium'
-    : 'bg-black/20 dark:bg-white/5 text-gray-900 dark:text-white border-white/10 dark:border-gray-700/50 placeholder:text-gray-400 dark:placeholder:text-gray-300';
+  const greenNeonGradient =
+    'conic-gradient(from 90deg at 50% 50%, #10b981 0%, #22c55e 25%, #059669 50%, #22c55e 75%, #10b981 100%)';
+  const inputStyles =
+    'bg-white/5 text-white border-white/10 focus:border-green-500/50 placeholder:text-gray-500 font-medium transition-all duration-300';
 
   return (
     <section
       id="contact"
-      ref={containerRef} // এই Ref টি এখানে থাকা আবশ্যিক
-      className="w-full min-h-screen bg-[#F8FAFC] dark:bg-base-300 py-24 transition-colors duration-500 font-sans flex items-center"
+      ref={containerRef}
+      className="w-full min-h-screen bg-black py-24 transition-colors duration-500 font-sans flex items-center overflow-hidden"
     >
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
-            CONTACT <span className="text-[#3AB5C9]"> ME?</span>
+          <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">
+            CONTACT <span className="text-green-500"> ME?</span>
           </h2>
         </div>
 
         <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
-          {/* Left Side: Large Illustration */}
           <div className="w-full lg:w-1/2 flex justify-center items-center">
             <div className="relative w-full max-w-[450px]">
+              <div className="absolute inset-0 bg-green-500/10 blur-[100px] rounded-full"></div>
               <svg
                 viewBox="0 0 400 350"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-full h-auto drop-shadow-2xl overflow-visible"
+                className="w-full h-auto drop-shadow-[0_0_20px_rgba(34,197,94,0.2)] overflow-visible relative z-10"
               >
-                {/* ১. চিঠির কাগজ (Letter) - মুভমেন্ট রেঞ্জ বাড়ানো হয়েছে */}
                 <motion.rect
                   x="70"
                   y="50"
                   width="260"
                   height="200"
                   rx="6"
-                  fill="white"
-                  stroke="#3AB5C9"
+                  fill="#1a1a1a"
+                  stroke="#22c55e"
                   strokeWidth="2"
                   style={{ y: letterMove }}
-                  className="shadow-sm"
                 />
-                <motion.g style={{ y: letterMove }} opacity="0.6">
+                <motion.g style={{ y: letterMove }} opacity="0.4">
                   <rect
                     x="100"
                     y="90"
                     width="200"
                     height="4"
                     rx="2"
-                    fill="#E2E8F0"
+                    fill="#22c55e"
                   />
                   <rect
                     x="100"
@@ -89,7 +98,7 @@ export default function Contact({ isRGBActive }) {
                     width="200"
                     height="4"
                     rx="2"
-                    fill="#E2E8F0"
+                    fill="#22c55e"
                   />
                   <rect
                     x="100"
@@ -97,7 +106,7 @@ export default function Contact({ isRGBActive }) {
                     width="200"
                     height="4"
                     rx="2"
-                    fill="#E2E8F0"
+                    fill="#22c55e"
                   />
                   <rect
                     x="100"
@@ -105,36 +114,32 @@ export default function Contact({ isRGBActive }) {
                     width="120"
                     height="4"
                     rx="2"
-                    fill="#E2E8F0"
+                    fill="#22c55e"
                   />
                 </motion.g>
-
-                {/* ২. খামের পেছনের অংশ (Body) */}
                 <path
                   d="M30 120 V300 H370 V120"
-                  fill="white"
-                  stroke="#3AB5C9"
+                  fill="#0a0a0a"
+                  stroke="#22c55e"
                   strokeWidth="3.5"
                   strokeLinejoin="round"
                 />
-
-                {/* ৩. খামের সামনের ভাঁজ (Front Flaps) */}
                 <path
                   d="M30 120 L200 230 L370 120"
-                  stroke="#3AB5C9"
+                  stroke="#22c55e"
                   strokeWidth="3.5"
-                  fill="white"
+                  fill="#0f0f0f"
                   strokeLinejoin="round"
                 />
                 <path
                   d="M30 300 L160 190"
-                  stroke="#3AB5C9"
+                  stroke="#22c55e"
                   strokeWidth="3"
                   strokeLinecap="round"
                 />
                 <path
                   d="M370 300 L240 190"
-                  stroke="#3AB5C9"
+                  stroke="#22c55e"
                   strokeWidth="3"
                   strokeLinecap="round"
                 />
@@ -142,60 +147,67 @@ export default function Contact({ isRGBActive }) {
             </div>
           </div>
 
-          {/* Right Side: Contact Form Card */}
           <div className="w-full md:w-[450px]">
-            <div className="relative p-[1.5px] rounded-3xl overflow-hidden shadow-2xl">
+            <div className="relative p-[1.5px] rounded-3xl overflow-hidden shadow-2xl group">
               <div
-                className="absolute inset-[-1000%] animate-border-spin opacity-50"
+                className="absolute inset-[-1000%] animate-border-spin opacity-70"
                 style={{
-                  background: isRGBActive ? lightGradient : darkGradient,
+                  background: isRGBActive ? greenNeonGradient : '#1f2937',
                 }}
               ></div>
-              <div className="relative bg-white/40 dark:bg-gray-900/40 backdrop-blur-2xl p-8 rounded-[22px] border border-white/30 dark:border-gray-800/30">
+
+              <div className="relative bg-[#0a0a0a]/90 backdrop-blur-2xl p-8 rounded-[22px] border border-white/5">
                 <form
                   ref={formRef}
                   onSubmit={handleSubmit}
                   className="space-y-4"
                 >
+                  {/* Hidden title field to match {{title}} in your template */}
+                  <input type="hidden" name="title" value="Portfolio Message" />
+
+                  <div className="grid grid-cols-1 gap-4">
+                    <input
+                      name="name"
+                      type="text"
+                      required
+                      placeholder="Your Full Name"
+                      className={`w-full px-5 py-4 rounded-xl border focus:outline-none text-sm ${inputStyles}`}
+                    />
+                  </div>
                   <input
-                    type="text"
-                    required
-                    placeholder="First Name"
-                    className={`w-full px-5 py-4 rounded-xl border focus:outline-none transition-all text-sm ${inputStyles}`}
-                  />
-                  <input
-                    type="text"
-                    required
-                    placeholder="Last Name"
-                    className={`w-full px-5 py-4 rounded-xl border focus:outline-none transition-all text-sm ${inputStyles}`}
-                  />
-                  <input
+                    name="email"
                     type="email"
                     required
                     placeholder="Email Address"
-                    className={`w-full px-5 py-4 rounded-xl border focus:outline-none transition-all text-sm ${inputStyles}`}
+                    className={`w-full px-5 py-4 rounded-xl border focus:outline-none text-sm ${inputStyles}`}
                   />
                   <textarea
+                    name="message"
                     rows="4"
                     required
-                    placeholder="Your questions..."
-                    className={`w-full px-5 py-4 rounded-xl border focus:outline-none transition-all text-sm resize-none ${inputStyles}`}
+                    placeholder="Tell me about your project..."
+                    className={`w-full px-5 py-4 rounded-xl border focus:outline-none text-sm resize-none ${inputStyles}`}
                   ></textarea>
 
                   <div className="min-h-[24px] flex items-center justify-center">
                     {isSent && (
-                      <div className="text-green-500 text-sm font-semibold animate-bounce">
-                        ✓ Message successfully sent!
-                      </div>
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="text-green-500 text-sm font-semibold flex items-center gap-2"
+                      >
+                        <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                        Message sent successfully!
+                      </motion.div>
                     )}
                   </div>
 
                   <button
+                    disabled={isSending}
                     type="submit"
-                    className="w-full py-4 rounded-full font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
-                    style={{ background: isRGBActive ? lightBtn : darkBtn }}
+                    className={`w-full py-4 cursor-pointer rounded-full font-bold uppercase tracking-wider text-black shadow-[0_0_20px_rgba(34,197,94,0.3)] transition-all hover:scale-[1.02] active:scale-95 bg-green-500 hover:bg-green-400 ${isSending ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
-                    SEND MESSAGE
+                    {isSending ? 'SENDING...' : 'SEND MESSAGE'}
                   </button>
                 </form>
               </div>

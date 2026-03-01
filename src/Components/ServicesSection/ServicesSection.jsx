@@ -1,4 +1,5 @@
 import React from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import {
   LuLayoutTemplate,
@@ -9,6 +10,7 @@ import {
   LuSearchCode,
 } from 'react-icons/lu';
 
+// eslint-disable-next-line no-unused-vars
 const ServiceCard = ({ title, description, icon: Icon, isFeatured }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -21,7 +23,6 @@ const ServiceCard = ({ title, description, icon: Icon, isFeatured }) => (
         : 'bg-[#0f110f] border-white/5 hover:border-green-500/30 shadow-xl'
     }`}
   >
-    {/* সূক্ষ্ম গ্রিড ব্যাকগ্রাউন্ড */}
     <div
       className="absolute inset-0 opacity-[0.03] pointer-events-none"
       style={{
@@ -51,21 +52,19 @@ const ServiceCard = ({ title, description, icon: Icon, isFeatured }) => (
       {description}
     </p>
 
-    {/* হোভার করলে নিচের গ্লো ইফেক্ট */}
     <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-green-500/5 blur-[50px] group-hover:bg-green-500/20 transition-all" />
   </motion.div>
 );
 
 export default function ServicesSection() {
   const services = [
-    // প্রথম ২টা কার্ড (একটু বড় দেখাবে)
     {
       title: 'Frontend Development',
       description:
         'Building responsive and performant web applications using React, Next.js, and modern JavaScript frameworks with pixel-perfect designs.',
       icon: LuLayoutTemplate,
       isFeatured: false,
-      gridClass: 'lg:col-span-2', // ২ কলাম জায়গা নিবে
+      gridClass: 'lg:col-span-2',
     },
     {
       title: 'Responsive Design',
@@ -73,9 +72,9 @@ export default function ServicesSection() {
         'Creating mobile-first, responsive interfaces that work seamlessly across all devices and screen sizes with exceptional user experience.',
       icon: LuSmartphone,
       isFeatured: true,
-      gridClass: 'lg:col-span-2', // ২ কলাম জায়গা নিবে
+      gridClass: 'lg:col-span-2',
     },
-    // নিচের ৪টা কার্ড (ছোট দেখাবে)
+
     {
       title: 'UI/UX Design',
       description:
@@ -113,7 +112,6 @@ export default function ServicesSection() {
       id="services"
       className="relative bg-black py-24 px-6 overflow-hidden"
     >
-      {/* গ্লোবাল সেকশন গ্রিড */}
       <div
         className="absolute inset-0 opacity-[0.15] pointer-events-none"
         style={{
@@ -128,15 +126,12 @@ export default function ServicesSection() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             className="text-gray-400 uppercase tracking-[0.3em] text-xs font-bold"
-          >
-            What I Offer
-          </motion.h2>
+          ></motion.h2>
           <p className="text-white text-4xl md:text-6xl font-black mb-4 tracking-tighter italic">
             Services
           </p>
         </div>
 
-        {/* মেইন গ্রিড লেআউট */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
             <div key={index} className={`${service.gridClass}`}>

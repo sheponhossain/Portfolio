@@ -1,42 +1,143 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useSpring } from 'framer-motion';
+// eslint-disable-next-line no-unused-vars
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 
-export default function Education({ isRGBActive }) {
+// ১. কার্ড কম্পোনেন্ট (Internal Component)
+const EducationCard = ({ edu, index, scrollYProgress }) => {
+  const step = 1 / 3;
+  const cardStart = index * step;
+  const impactPoint = cardStart + 0.12;
+  const flowEnd = impactPoint + 0.05;
+
+  // মেইন লাইন থেকে কার্ডের দিকে আলোর স্রোত (Width animation)
+  const lightWidth = useTransform(
+    scrollYProgress,
+    [impactPoint, flowEnd],
+    ['0%', '100%']
+  );
+
+  // আলো একবার কার্ডে পৌঁছে গেলে সেটি স্থায়ীভাবে জ্বলে থাকবে
+  const lightOpacity = useTransform(
+    scrollYProgress,
+    [impactPoint, impactPoint + 0.01],
+    [0, 1]
+  );
+
+  // কার্ডের বর্ডার গ্লো (আলো পৌঁছানোর পর স্থায়ী হয়ে যাবে)
+  const borderGlow = useTransform(
+    scrollYProgress,
+    [impactPoint, flowEnd],
+    ['rgba(255, 255, 255, 0.1)', 'rgba(34, 197, 94, 1)']
+  );
+
+  return (
+    <div
+      className={`flex items-center w-full relative mb-32 ${index % 2 === 0 ? 'md:flex-row-reverse' : 'md:flex-row'}`}
+    >
+      {/* কার্ড এরিয়া (Vibration সরানো হয়েছে, Scale এখন ১) */}
+      <motion.div
+        style={{
+          opacity: useTransform(
+            scrollYProgress,
+            [cardStart, impactPoint],
+            [0.3, 1]
+          ),
+        }}
+        className="w-full md:w-[45%] ml-12 md:ml-0"
+      >
+        <motion.div
+          style={{
+            borderColor: borderGlow,
+            boxShadow: useTransform(
+              scrollYProgress,
+              [impactPoint, flowEnd],
+              ['0 0 0px #22c55e', '0 0 25px rgba(34, 197, 94, 0.2)']
+            ),
+          }}
+          className="relative p-8 bg-[#050505] backdrop-blur-3xl rounded-[30px] border-2 transition-all duration-500 shadow-2xl group"
+        >
+          {/* কানেক্টর লাইন: যা মেইন ভার্টিকাল লাইনের সাথে একদম লেগে আছে */}
+          <div
+            className={`absolute top-1/2 -translate-y-1/2 h-[2px] hidden md:block overflow-hidden ${
+              index % 2 === 0 ? '-left-8 w-8' : '-right-8 w-8'
+            }`}
+          >
+            {/* ব্যাকগ্রাউন্ড তার (খুবই হালকা) */}
+            <div className="absolute inset-0 bg-white/5" />
+
+            {/* মেইন লাইন থেকে আসা এনার্জি বোল্ট */}
+            <motion.div
+              style={{
+                width: lightWidth,
+                opacity: lightOpacity,
+                left: index % 2 === 0 ? 'auto' : 0,
+                right: index % 2 === 0 ? 0 : 'auto',
+                background:
+                  'linear-gradient(90deg, transparent, #22c55e, #fff)',
+                boxShadow: '0 0 15px #22c55e',
+              }}
+              className="absolute top-0 h-full flex items-center justify-end"
+            >
+              {/* আলোর অগ্রভাগের স্পার্ক */}
+              <div className="w-1.5 h-1.5 bg-white rounded-full blur-[1px] shadow-[0_0_8px_#fff]" />
+            </motion.div>
+          </div>
+
+          {/* মোবাইল ভিউর জন্য ছোট এনার্জি ডট */}
+          <motion.div
+            style={{ opacity: lightOpacity }}
+            className="absolute -left-[35px] top-1/2 -translate-y-1/2 w-3 h-3 bg-green-500 rounded-full md:hidden shadow-[0_0_15px_#22c55e]"
+          />
+
+          {/* ডিটেইলস */}
+          <div className="absolute -top-5 left-10 px-5 py-1.5 rounded-full text-[11px] font-black text-black uppercase tracking-tighter bg-green-500 shadow-[0_10px_20px_rgba(34,197,94,0.3)]">
+            {edu.duration}
+          </div>
+
+          <h3 className="text-2xl md:text-3xl font-black text-white mb-2 italic uppercase tracking-tighter group-hover:text-green-400 transition-colors duration-500">
+            {edu.degree}
+          </h3>
+          <h4 className="text-sm font-bold text-green-500/90 mb-4 uppercase tracking-widest flex items-center gap-2">
+            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+            {edu.institution}
+          </h4>
+          <p className="text-gray-400 text-sm leading-relaxed font-medium">
+            {edu.description}
+          </p>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+};
+
+// ২. প্রধান কম্পোনেন্ট
+export default function Education() {
   const containerRef = useRef(null);
-
-  const darkGradient = 'linear-gradient(to right, #8E7CDB, #55B4E4)';
-  const lightGradient = 'linear-gradient(to right, #FF9A9E, #A1C4FD)';
-
-  // সেকশনের স্ক্রল ট্র্যাক করা
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start center', 'end center'],
   });
 
-  // স্ক্রল মুভমেন্টকে একদম ফাস্ট এবং স্মুথ করার জন্য
-  const scaleY = useSpring(scrollYProgress, {
-    stiffness: 150,
-    damping: 30,
-  });
+  const scaleY = useSpring(scrollYProgress, { stiffness: 100, damping: 25 });
 
   const educationData = [
     {
       degree: 'B.Sc in Computer Science',
-      institution: 'Your University Name',
+      institution: 'Sonargaon University',
       duration: '2021 - Present',
       description:
         'Focusing on modern web architecture and advanced software engineering principles.',
     },
     {
       degree: 'Higher Secondary Certificate (HSC)',
-      institution: 'Your College Name',
+      institution: 'Rajabari Degree College',
       duration: '2018 - 2020',
       description:
         'Major in Science with a strong focus on Mathematics and Information Technology.',
     },
     {
       degree: 'Secondary School Certificate (SSC)',
-      institution: 'Your School Name',
+      institution: 'Golam Nabi Pilot High School',
       duration: '2016 - 2018',
       description:
         'Started the journey of technology and science with excellence.',
@@ -47,71 +148,32 @@ export default function Education({ isRGBActive }) {
     <section
       id="education"
       ref={containerRef}
-      className="w-full py-32 bg-[#F8FAFC] dark:bg-base-300 transition-colors duration-500 overflow-hidden relative"
+      className="w-full py-32 bg-black overflow-hidden relative"
     >
       <div className="container mx-auto px-6 max-w-4xl relative">
         <div className="text-center mb-24">
-          <h2 className="text-4xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
-            Academic <span className="text-[#55B4E4]">Journey</span>
+          <h2 className="text-4xl font-black text-white uppercase tracking-tighter">
+            Academic <span className="text-green-500">Journey</span>
           </h2>
         </div>
 
         <div className="relative">
-          {/* ১. চিকন ড্যাশড ভার্টিকাল লাইন (Slim Dashed Line) */}
-          <div className="absolute left-[20px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[1px] border-l border-dashed border-gray-300 dark:border-gray-700 z-0">
-            {/* ২. প্রগ্রেস লাইন (স্ক্রল করলে এই চিকন লাইনটি কালার হবে) */}
+          {/* মেইন ভার্টিকাল প্রগ্রেস লাইন */}
+          <div className="absolute left-[20px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[1px] border-l border-dashed border-white/20">
             <motion.div
               style={{ scaleY, originY: 0 }}
-              className="absolute top-0 left-[-1px] w-[2px] h-full bg-gradient-to-b from-[#8E7CDB] to-[#55B4E4] z-10"
+              className="absolute top-0 left-[-1px] w-[2px] h-full bg-green-500 shadow-[0_0_20px_#22c55e] z-10"
             />
           </div>
 
-          {/* কার্ডগুলো */}
           <div className="space-y-32">
             {educationData.map((edu, index) => (
-              <div
+              <EducationCard
                 key={index}
-                className={`flex items-center w-full ${
-                  index % 2 === 0 ? 'md:flex-row-reverse' : 'md:flex-row'
-                }`}
-              >
-                {/* কার্ড এনিমেশন: পাশ থেকে আসবে */}
-                <motion.div
-                  initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, ease: 'easeOut' }}
-                  viewport={{ once: true, margin: '-100px' }}
-                  className="w-full md:w-[45%] ml-12 md:ml-0"
-                >
-                  <div className="relative p-8 bg-white/70 dark:bg-gray-900/50 backdrop-blur-3xl rounded-[30px] border border-white/40 dark:border-gray-800/40 shadow-xl hover:scale-[1.02] transition-transform duration-300">
-                    {/* কার্ডের কানেক্টর ড্যাশ */}
-                    <div
-                      className={`absolute top-1/2 -translate-y-1/2 w-6 h-[1px] border-t border-dashed border-gray-400 dark:border-gray-600 hidden md:block ${
-                        index % 2 === 0 ? '-left-6' : '-right-6'
-                      }`}
-                    ></div>
-
-                    <div
-                      className="absolute -top-4 left-8 px-4 py-1 rounded-full text-[10px] font-bold text-white shadow-md uppercase tracking-tighter"
-                      style={{
-                        background: isRGBActive ? lightGradient : darkGradient,
-                      }}
-                    >
-                      {edu.duration}
-                    </div>
-
-                    <h3 className="text-xl md:text-2xl font-black text-gray-800 dark:text-white mb-1 italic uppercase tracking-tighter">
-                      {edu.degree}
-                    </h3>
-                    <h4 className="text-sm font-bold text-[#55B4E4] mb-3 uppercase tracking-wide">
-                      {edu.institution}
-                    </h4>
-                    <p className="text-gray-500 dark:text-gray-300 text-sm leading-relaxed">
-                      {edu.description}
-                    </p>
-                  </div>
-                </motion.div>
-              </div>
+                edu={edu}
+                index={index}
+                scrollYProgress={scrollYProgress}
+              />
             ))}
           </div>
         </div>

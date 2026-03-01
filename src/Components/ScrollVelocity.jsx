@@ -1,12 +1,13 @@
 import { useRef, useLayoutEffect, useState } from 'react';
 import {
+  // eslint-disable-next-line no-unused-vars
   motion,
   useScroll,
   useSpring,
   useTransform,
   useMotionValue,
   useVelocity,
-  useAnimationFrame
+  useAnimationFrame,
 } from 'framer-motion';
 
 function useElementWidth(ref) {
@@ -38,15 +39,17 @@ export function VelocityText({
   parallaxClassName,
   scrollerClassName,
   parallaxStyle,
-  scrollerStyle
+  scrollerStyle,
 }) {
   const baseX = useMotionValue(0);
-  const scrollOptions = scrollContainerRef ? { container: scrollContainerRef } : {};
+  const scrollOptions = scrollContainerRef
+    ? { container: scrollContainerRef }
+    : {};
   const { scrollY } = useScroll(scrollOptions);
   const scrollVelocity = useVelocity(scrollY);
   const smoothVelocity = useSpring(scrollVelocity, {
     damping: damping ?? 50,
-    stiffness: stiffness ?? 400
+    stiffness: stiffness ?? 400,
   });
   const velocityFactor = useTransform(
     smoothVelocity,
@@ -64,7 +67,7 @@ export function VelocityText({
     return mod + min;
   }
 
-  const x = useTransform(baseX, v => {
+  const x = useTransform(baseX, (v) => {
     if (copyWidth === 0) return '0px';
     return `${wrap(-copyWidth, 0, v)}px`;
   });
@@ -86,14 +89,21 @@ export function VelocityText({
   const spans = [];
   for (let i = 0; i < (numCopies ?? 1); i++) {
     spans.push(
-      <div className={`flex-shrink-0 flex items-center gap-8 ${className}`} key={i} ref={i === 0 ? copyRef : null}>
+      <div
+        className={`flex-shrink-0 flex items-center gap-8 ${className}`}
+        key={i}
+        ref={i === 0 ? copyRef : null}
+      >
         {children}
       </div>
     );
   }
 
   return (
-    <div className={`${parallaxClassName} relative overflow-hidden`} style={parallaxStyle}>
+    <div
+      className={`${parallaxClassName} relative overflow-hidden`}
+      style={parallaxStyle}
+    >
       <motion.div
         className={`${scrollerClassName} flex whitespace-nowrap`}
         style={{ x, ...scrollerStyle }}
@@ -116,7 +126,7 @@ const ScrollVelocity = ({
   parallaxClassName,
   scrollerClassName,
   parallaxStyle,
-  scrollerStyle
+  scrollerStyle,
 }) => {
   return (
     <section>

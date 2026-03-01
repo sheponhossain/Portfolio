@@ -66,3 +66,6 @@
   );
   animation: light-travel 4s linear infinite;
 }
+html {
+  scroll-behavior: smooth;
+}

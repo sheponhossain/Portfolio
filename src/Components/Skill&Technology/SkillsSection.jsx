@@ -1,4 +1,5 @@
 import React from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import {
   FaCode,
@@ -84,37 +85,37 @@ export default function SkillsSection() {
         {
           name: 'React.js',
           icon: <FaReact />,
-          years: '3+ years',
-          level: 'Expert',
-          percentage: '95%',
+          years: '0-1 years',
+          level: 'Intermediate',
+          percentage: '30%',
         },
         {
           name: 'JavaScript',
           icon: <FaJs />,
-          years: '4+ years',
-          level: 'Expert',
-          percentage: '90%',
+          years: '0-1 years',
+          level: 'Intermediate',
+          percentage: '60%',
         },
         {
           name: 'TypeScript',
           icon: <SiTypescript />,
-          years: '2+ years',
-          level: 'Advanced',
-          percentage: '85%',
+          years: '0-6 years',
+          level: 'Learning',
+          percentage: '25%',
         },
         {
           name: 'Next.js',
           icon: <SiNextdotjs />,
-          years: '2+ years',
-          level: 'Advanced',
-          percentage: '80%',
+          years: '0-6 years',
+          level: 'Intermediate',
+          percentage: '20%',
         },
         {
           name: 'Tailwind CSS',
           icon: <SiTailwindcss />,
-          years: '3+ years',
-          level: 'Expert',
-          percentage: '95%',
+          years: '1+ years',
+          level: 'Intermediate',
+          percentage: '85%',
         },
       ],
     },
@@ -125,16 +126,16 @@ export default function SkillsSection() {
         {
           name: 'Node.js',
           icon: <FaNodeJs />,
-          years: '2+ years',
+          years: '0-1 years',
           level: 'Intermediate',
-          percentage: '65%',
+          percentage: '45%',
         },
         {
           name: 'REST APIs',
           icon: <SiExpress />,
-          years: '3+ years',
-          level: 'Advanced',
-          percentage: '85%',
+          years: '0-1 years',
+          level: 'Intermediate',
+          percentage: '75%',
         },
       ],
     },
@@ -145,21 +146,21 @@ export default function SkillsSection() {
         {
           name: 'Git & GitHub',
           icon: <FaGitAlt />,
-          years: '4+ years',
+          years: '2+ years',
           level: 'Advanced',
           percentage: '88%',
         },
         {
           name: 'Responsive Design',
           icon: <FaCode />,
-          years: '3+ years',
-          level: 'Expert',
+          years: '1+ years',
+          level: 'Advanced',
           percentage: '98%',
         },
         {
           name: 'Figma',
           icon: <FaFigma />,
-          years: '2+ years',
+          years: '1+ years',
           level: 'Intermediate',
           percentage: '70%',
         },
@@ -179,18 +180,6 @@ export default function SkillsSection() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-20 space-y-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-green-500/30 bg-green-500/5 text-green-500 text-xs font-bold tracking-widest uppercase"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-            </span>
-            My Expertise
-          </motion.div>
-
           <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter">
             Skills & <span className="text-green-500">Technologies</span>
           </h2>

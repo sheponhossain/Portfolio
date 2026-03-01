@@ -8,7 +8,7 @@ const Hero = () => {
   const skills = ['UI/UX Designer', 'Frontend Developer', 'Creative Coder'];
   const greetings = ['Hello', 'Hola', 'Ciao', 'مرحبا'];
   return (
-    <section className="relative w-full h-screen overflow-hidden">
+    <section id="home" className="relative w-full h-screen overflow-hidden">
       {/* 1. Spline Background */}
       <div className="absolute inset-0 z-10 w-full h-full">
         <Spline scene="https://prod.spline.design/emP7OMOv798kZnR0/scene.splinecode" />
