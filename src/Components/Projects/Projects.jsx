@@ -10,7 +10,7 @@ const Projects = () => {
       title: 'Dragon News',
       desc: 'Google and GitHub social logins, email verification, and Context API to eliminate prop drilling in this dynamic news portal project',
       tags: ['Tailwind', 'React', 'Firebase', 'Stripe'],
-      image: 'https://i.ibb.co.com/FbdVbScj/dragon-news.jpg', // আপনার ইমেজের লিঙ্ক এখানে দিন
+      image: 'https://i.ibb.co.com/FbdVbScj/dragon-news.jpg',
       github: 'https://github.com/sheponhossain/Dragon-News',
       live: 'https://dragon-news-e70c9.web.app/category/0',
       stats: '40% increase in conversion',
@@ -28,13 +28,14 @@ const Projects = () => {
     },
     {
       id: 3,
-      title: 'Espresso Emporium',
+      title: 'Blood Donation',
       desc: 'Build a CRUD-based API to master data storage, updates, and deletions through seamless backend and database integration.',
       tags: ['Tailwind', 'React', 'Node.js', 'Express', 'MongoDB'],
-      image: 'https://i.ibb.co.com/p6Bc82Z8/emporium.jpg',
-      github: 'https://github.com/sheponhossain/Espresso-Emporium',
-      live: '#',
-      stats: '1K+ Order',
+      image:
+        'https://i.ibb.co.com/9kSx39gw/Gemini-Generated-Image-ixlqzaixlqzaixlq.png',
+      github: 'https://github.com/sheponhossain/Blood-Donation-Client.git',
+      live: 'https://blood-donation-11.web.app/',
+      stats: '1K+ donors registered',
     },
   ];
 
@@ -48,7 +49,11 @@ const Projects = () => {
             whileInView={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-5xl font-bold mb-4"
           >
-            Featured <span className="text-green-500">Projects</span>
+            <div className="text-center mb-24">
+              <h2 className="text-4xl font-black text-white uppercase tracking-tighter">
+                Featured <span className="text-green-500">Projects</span>
+              </h2>
+            </div>
           </motion.h2>
         </div>
 

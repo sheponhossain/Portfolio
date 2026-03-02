@@ -56,9 +56,9 @@ export default function Contact({ isRGBActive }) {
       className="w-full min-h-screen bg-black py-24 transition-colors duration-500 font-sans flex items-center overflow-hidden"
     >
       <div className="container mx-auto px-6 max-w-6xl">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">
-            CONTACT <span className="text-green-500"> ME?</span>
+        <div className="text-center mb-24">
+          <h2 className="text-4xl font-black text-white uppercase tracking-tighter">
+            CONTACT <span className="text-green-500">ME</span>
           </h2>
         </div>
 

@@ -54,10 +54,19 @@ const Hero = () => {
               <ArrowRight size={20} />
             </a>
             <a
-              href="https://drive.google.com/file/d/12eVQLyaFFsxzPwyrjUtJHHcK0ZUb3tNg/view"
+              href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 text-base font-semibold text-white transition-all duration-300 bg-transparent border border-white rounded-lg shadow-lg pointer-events-auto hover:bg-white hover:text-white hover:scale-105"
+              // eslint-disable-next-line no-unused-vars
+              onClick={(e) => {
+                const link = document.createElement('a');
+                link.href = '/resume.pdf';
+                link.download = 'Shepon_Hossain_Resume.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+              className="inline-flex items-center gap-2 px-6 py-3 text-base font-semibold text-white transition-all duration-300 bg-transparent border border-white rounded-lg shadow-lg pointer-events-auto hover:bg-white hover:text-black hover:scale-105"
             >
               View Resume
             </a>

@@ -127,9 +127,11 @@ export default function ServicesSection() {
             whileInView={{ opacity: 1 }}
             className="text-gray-400 uppercase tracking-[0.3em] text-xs font-bold"
           ></motion.h2>
-          <p className="text-white text-4xl md:text-6xl font-black mb-4 tracking-tighter italic">
-            Services
-          </p>
+          <div className="text-center mb-24">
+            <h2 className="text-4xl font-black text-white uppercase tracking-tighter">
+              <span className="text-green-500">Service</span>
+            </h2>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

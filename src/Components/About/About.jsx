@@ -9,7 +9,7 @@ export default function About({ isRGBActive }) {
     >
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white uppercase tracking-tighter">
+          <h2 className="text-4xl font-black text-white uppercase tracking-tighter">
             About <span className="text-green-500">Me</span>
           </h2>
         </div>

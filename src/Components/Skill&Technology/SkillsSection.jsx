@@ -180,9 +180,10 @@ export default function SkillsSection() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-20 space-y-4">
-          <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter">
+          <h2 className="text-4xl font-black text-white uppercase tracking-tighter">
             Skills & <span className="text-green-500">Technologies</span>
           </h2>
+
           <p className="text-gray-500 max-w-2xl mx-auto text-sm md:text-base font-medium">
             A comprehensive overview of my technical skills and proficiency
             levels in building modern web applications.

@@ -9,21 +9,18 @@ const EducationCard = ({ edu, index, scrollYProgress }) => {
   const impactPoint = cardStart + 0.12;
   const flowEnd = impactPoint + 0.05;
 
-  // মেইন লাইন থেকে কার্ডের দিকে আলোর স্রোত (Width animation)
   const lightWidth = useTransform(
     scrollYProgress,
     [impactPoint, flowEnd],
     ['0%', '100%']
   );
 
-  // আলো একবার কার্ডে পৌঁছে গেলে সেটি স্থায়ীভাবে জ্বলে থাকবে
   const lightOpacity = useTransform(
     scrollYProgress,
     [impactPoint, impactPoint + 0.01],
     [0, 1]
   );
 
-  // কার্ডের বর্ডার গ্লো (আলো পৌঁছানোর পর স্থায়ী হয়ে যাবে)
   const borderGlow = useTransform(
     scrollYProgress,
     [impactPoint, flowEnd],
@@ -34,7 +31,6 @@ const EducationCard = ({ edu, index, scrollYProgress }) => {
     <div
       className={`flex items-center w-full relative mb-32 ${index % 2 === 0 ? 'md:flex-row-reverse' : 'md:flex-row'}`}
     >
-      {/* কার্ড এরিয়া (Vibration সরানো হয়েছে, Scale এখন ১) */}
       <motion.div
         style={{
           opacity: useTransform(
@@ -56,16 +52,13 @@ const EducationCard = ({ edu, index, scrollYProgress }) => {
           }}
           className="relative p-8 bg-[#050505] backdrop-blur-3xl rounded-[30px] border-2 transition-all duration-500 shadow-2xl group"
         >
-          {/* কানেক্টর লাইন: যা মেইন ভার্টিকাল লাইনের সাথে একদম লেগে আছে */}
           <div
             className={`absolute top-1/2 -translate-y-1/2 h-[2px] hidden md:block overflow-hidden ${
               index % 2 === 0 ? '-left-8 w-8' : '-right-8 w-8'
             }`}
           >
-            {/* ব্যাকগ্রাউন্ড তার (খুবই হালকা) */}
             <div className="absolute inset-0 bg-white/5" />
 
-            {/* মেইন লাইন থেকে আসা এনার্জি বোল্ট */}
             <motion.div
               style={{
                 width: lightWidth,
@@ -78,18 +71,15 @@ const EducationCard = ({ edu, index, scrollYProgress }) => {
               }}
               className="absolute top-0 h-full flex items-center justify-end"
             >
-              {/* আলোর অগ্রভাগের স্পার্ক */}
               <div className="w-1.5 h-1.5 bg-white rounded-full blur-[1px] shadow-[0_0_8px_#fff]" />
             </motion.div>
           </div>
 
-          {/* মোবাইল ভিউর জন্য ছোট এনার্জি ডট */}
           <motion.div
             style={{ opacity: lightOpacity }}
             className="absolute -left-[35px] top-1/2 -translate-y-1/2 w-3 h-3 bg-green-500 rounded-full md:hidden shadow-[0_0_15px_#22c55e]"
           />
 
-          {/* ডিটেইলস */}
           <div className="absolute -top-5 left-10 px-5 py-1.5 rounded-full text-[11px] font-black text-black uppercase tracking-tighter bg-green-500 shadow-[0_10px_20px_rgba(34,197,94,0.3)]">
             {edu.duration}
           </div>
@@ -158,7 +148,6 @@ export default function Education() {
         </div>
 
         <div className="relative">
-          {/* মেইন ভার্টিকাল প্রগ্রেস লাইন */}
           <div className="absolute left-[20px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[1px] border-l border-dashed border-white/20">
             <motion.div
               style={{ scaleY, originY: 0 }}
