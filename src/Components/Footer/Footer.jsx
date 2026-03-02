@@ -19,7 +19,7 @@ const Footer = () => {
       icon: <FaLinkedinIn />,
       href: 'https://www.linkedin.com/in/shepon-hossain/',
     },
-    { icon: <FaTwitter />, href: '#' },
+    { icon: <FaTwitter />, href: 'https://x.com/SheponC19762' },
     { icon: <FaGlobe />, href: '#' },
   ];
 
