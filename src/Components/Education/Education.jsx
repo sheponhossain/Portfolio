@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 
-// ১. কার্ড কম্পোনেন্ট (Internal Component)
 const EducationCard = ({ edu, index, scrollYProgress }) => {
   const step = 1 / 3;
   const cardStart = index * step;
@@ -100,7 +99,6 @@ const EducationCard = ({ edu, index, scrollYProgress }) => {
   );
 };
 
-// ২. প্রধান কম্পোনেন্ট
 export default function Education() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({

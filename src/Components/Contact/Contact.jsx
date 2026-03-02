@@ -30,7 +30,7 @@ export default function Contact({ isRGBActive }) {
         },
         (error) => {
           console.error('Final Error Check:', error.text);
-          alert('Error: ' + error.text); // এখানে এখন 'Template ID not found' আসা উচিত না
+          alert('Error: ' + error.text);
           setIsSending(false);
         }
       );
